@@ -1,0 +1,209 @@
+:root {
+  --spotify-green: #1db954;
+  --spotify-black: #191414;
+  --spotify-dark-grey: #121212;
+  --spotify-light-grey: #282828;
+  --spotify-white: #ffffff;
+  --spotify-grey: #b3b3b3;
+}
+
+body {
+  background-color: var(--spotify-black);
+  color: var(--spotify-white);
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+#root {
+  width: 100%;
+  max-width: 500px;
+  padding: 20px;
+}
+
+.login-container {
+  text-align: center;
+}
+
+.login-button {
+  background-color: var(--spotify-green);
+  color: var(--spotify-white);
+  border: none;
+  padding: 14px 32px;
+  border-radius: 50px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 24px;
+  transition: transform 0.2s, background-color 0.2s;
+}
+
+.login-button:hover {
+  background-color: #1ed760;
+  transform: scale(1.05);
+}
+
+.dashboard {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.attribution {
+  font-size: 12px;
+  color: var(--spotify-grey);
+  font-weight: bold;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.premium-note {
+  font-size: 12px;
+  color: var(--spotify-grey);
+  text-align: center;
+  margin-top: 16px;
+}
+
+.logout-icon-button {
+  background: transparent;
+  border: none;
+  color: var(--spotify-grey);
+  cursor: pointer;
+}
+
+.logout-icon-button:hover {
+  color: var(--spotify-white);
+}
+
+.player-card {
+  background-color: var(--spotify-light-grey);
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+}
+
+.artwork-container {
+  width: 100%;
+  aspect-ratio: 1;
+  margin-bottom: 24px;
+  box-shadow: 0 4px 60px rgba(0,0,0,0.5);
+}
+
+.artwork {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.track-info {
+  margin-bottom: 24px;
+}
+
+.track-name {
+  font-size: 24px;
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.artist-name {
+  font-size: 16px;
+  color: var(--spotify-grey);
+  margin: 8px 0 0;
+}
+
+.controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 32px;
+  margin-bottom: 24px;
+}
+
+.control-button {
+  background: transparent;
+  border: none;
+  color: var(--spotify-white);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  transition: transform 0.1s;
+}
+
+.control-button:hover {
+  transform: scale(1.1);
+}
+
+.control-button.play-pause {
+  background-color: var(--spotify-white);
+  color: black;
+  border-radius: 50%;
+  padding: 12px;
+}
+
+.control-button.play-pause:hover {
+  transform: scale(1.05);
+}
+
+.progress-container {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.progress-bar {
+  width: 100%;
+  accent-color: var(--spotify-green);
+  cursor: pointer;
+  height: 4px;
+}
+
+.progress-bar:hover {
+  accent-color: #1ed760;
+}
+
+.time-info {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  color: var(--spotify-grey);
+}
+
+.no-playback {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 16px;
+  padding: 40px;
+}
+
+.logout-button {
+  background-color: transparent;
+  border: 1px solid var(--spotify-grey);
+  color: var(--spotify-white);
+  padding: 8px 16px;
+  border-radius: 20px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.loading, .error {
+  text-align: center;
+  font-size: 18px;
+}
