@@ -31,7 +31,8 @@
   }
 
   .dashboard-container {
-    @apply flex flex-col h-screen w-screen bg-[var(--spotify-black)] overflow-hidden;
+    @apply flex flex-col h-screen w-screen bg-[var(--spotify-black)] overflow-hidden transition-all duration-1000 ease-in-out;
+    background: radial-gradient(circle at top left, rgba(var(--album-rgb), 0.25) 0%, var(--spotify-black) 70%);
   }
 
   .header {
@@ -80,7 +81,8 @@
   }
 
   .progress-bar {
-    @apply w-full cursor-pointer h-1 accent-[var(--spotify-green)] bg-white/20 rounded-full;
+    @apply w-full cursor-pointer h-1 bg-white/20 rounded-full transition-all duration-700;
+    accent-color: rgb(var(--album-rgb));
   }
 
   .time-info {
@@ -229,7 +231,8 @@
   }
 
   .lyric-line.active {
-    @apply text-[var(--spotify-white)] scale-105;
+    @apply text-[var(--spotify-white)] scale-110;
+    text-shadow: 0 0 15px rgba(var(--album-rgb), 0.6);
   }
 
   .lyric-line:hover:not(.active) {

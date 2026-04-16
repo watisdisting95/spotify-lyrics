@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import { Routes, Route, useNavigate, useSearchParams } from 'react-router-dom';
-import { ChevronUp, ChevronDown } from 'lucide-react';
 import { redirectToAuthCodeFlow, getAccessToken, saveTokens, getSavedTokens } from './SpotifyAuth';
 import { useSpotifyPlayback } from './hooks/useSpotifyPlayback';
+import { useAlbumColor } from './hooks/useAlbumColor';
 import { Header } from './components/Header';
 import { PlayerControls } from './components/PlayerControls';
 import { ProgressBar } from './components/ProgressBar';
@@ -10,6 +10,7 @@ import { LyricsView } from './components/LyricsView';
 import { NoPlaybackView } from './components/NoPlaybackView';
 
 function App() {
+// ... (rest of App component)
   return (
     <Routes>
       <Route path="/" element={<LoginView />} />
@@ -92,6 +93,9 @@ function DashboardView() {
 
   const [isPlayerMinimized, setIsPlayerMinimized] = useState(false);
 
+  const albumImageUrl = playback?.item?.album?.images[0]?.url;
+  const [r, g, b] = useAlbumColor(albumImageUrl);
+
   if (loading) return <div className="loading">Connecting to Spotify...</div>;
 
   if (!playback || !playback.item) {
@@ -104,7 +108,10 @@ function DashboardView() {
   const toggleCollapse = () => setIsPlayerMinimized(!isPlayerMinimized);
 
   return (
-    <div className={`dashboard-container ${isPlayerMinimized ? 'player-minimized' : ''}`}>
+    <div 
+      className={`dashboard-container ${isPlayerMinimized ? 'player-minimized' : ''}`}
+      style={{ '--album-rgb': `${r}, ${g}, ${b}` } as React.CSSProperties}
+    >
       {!isPlayerMinimized && <Header />}
       
       <div className="dashboard-layout">
