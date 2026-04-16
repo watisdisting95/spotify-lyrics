@@ -21,6 +21,7 @@
 }
 
 @layer components {
+  /* --- Base Utilities --- */
   .login-container {
     @apply flex flex-col justify-center items-center h-screen text-center;
   }
@@ -49,161 +50,7 @@
     @apply flex flex-1 overflow-hidden transition-all duration-500 ease-in-out;
   }
 
-  /* Portrait Layout */
-  @media (orientation: portrait) {
-    .dashboard-layout {
-      @apply flex-col;
-    }
-
-    .player-section {
-      @apply w-full p-6 flex flex-col items-center transition-all duration-500 ease-in-out;
-    }
-
-    .player-minimized .player-section {
-      @apply flex-row py-2 px-4 gap-4 justify-between;
-    }
-
-    .artwork-container {
-      @apply w-48 h-48 mb-6 shadow-2xl transition-all duration-500;
-    }
-
-    .track-info {
-      @apply text-center mb-4 transition-all duration-500 overflow-hidden;
-    }
-
-    .player-minimized .track-info {
-      @apply mb-0 flex-1 text-left flex flex-col items-start gap-0;
-    }
-
-    .player-minimized .track-name {
-      @apply text-base;
-    }
-
-    .player-minimized .artist-name {
-      @apply text-xs mt-0;
-    }
-
-    .player-controls-wrapper {
-      @apply w-full max-w-md transition-all duration-500;
-    }
-
-    .player-minimized .player-controls-wrapper {
-      @apply flex-1 flex flex-row-reverse items-center justify-start gap-4;
-    }
-
-    .player-minimized .controls {
-      @apply mb-0 gap-2;
-    }
-
-    .player-minimized .control-button {
-      @apply p-1;
-    }
-
-    .player-minimized .control-button.play-pause {
-      @apply p-2;
-    }
-
-    .player-minimized .progress-container {
-      @apply flex-1 mb-0;
-    }
-
-    .player-minimized .time-info {
-      @apply hidden; /* Hide times in super compact mode */
-    }
-
-    .lyrics-section {
-      @apply flex-1 w-full px-6 pb-6 overflow-hidden;
-    }
-  }
-
-  /* Landscape Layout */
-  @media (orientation: landscape) {
-    .dashboard-layout {
-      @apply flex-row;
-    }
-
-    .player-section {
-      @apply w-[350px] p-8 flex flex-col justify-center items-center border-r border-white/10 transition-all duration-500 ease-in-out;
-    }
-
-    .artwork-container {
-      @apply w-full aspect-square mb-8 shadow-2xl;
-    }
-
-    .track-info {
-      @apply w-full mb-8;
-    }
-
-    .player-controls-wrapper {
-      @apply w-full;
-    }
-
-    .lyrics-section {
-      @apply flex-1 px-12 py-8 overflow-hidden;
-    }
-
-    /* Minimized Landscape (Bottom Docked Bar) */
-    .player-minimized .player-section {
-      @apply fixed bottom-0 left-0 w-full h-20 border-r-0 border-t flex-row justify-between px-10 py-2 bg-[var(--spotify-dark-grey)] z-30;
-    }
-
-    .player-minimized .track-info {
-      @apply w-auto mb-0 mr-8 flex-shrink-0;
-    }
-
-    .player-minimized .track-name {
-      @apply text-xl;
-    }
-
-    .player-minimized .artist-name {
-      @apply text-sm mt-1;
-    }
-
-    .player-minimized .player-controls-wrapper {
-      @apply flex-1 flex items-center gap-10;
-    }
-
-    .player-minimized .controls {
-      @apply mb-0;
-    }
-
-    .player-minimized .progress-container {
-      @apply flex-1 mb-0;
-    }
-
-    .player-minimized .lyrics-section {
-      @apply pb-24; /* Space for the bottom bar */
-    }
-    
-    .minimize-toggle-land {
-       @apply mt-6 bg-transparent border border-[var(--spotify-grey)] text-[var(--spotify-white)] px-4 py-2 rounded-full cursor-pointer transition-all duration-200 hover:bg-white/10 flex items-center gap-2;
-    }
-
-    .player-minimized .minimize-toggle-land {
-       @apply mt-0;
-    }
-
-    .portrait-only {
-      @apply hidden;
-    }
-  }
-
-  /* Portrait Layout Fixes */
-  @media (orientation: portrait) {
-    .minimize-toggle-land {
-      @apply flex; /* Ensure button is visible in portrait as it's our main toggle now */
-    }
-
-    .landscape-only {
-      @apply hidden;
-    }
-
-    .portrait-only {
-      @apply block;
-    }
-  }
-
-  /* Shared Player Component Styles */
+  /* --- Base Player Components (Order matters: these are defaults) --- */
   .artwork {
     @apply w-full h-full object-cover rounded-lg;
   }
@@ -217,15 +64,15 @@
   }
 
   .controls {
-    @apply flex justify-center items-center gap-8 mb-6 transition-all duration-500;
+    @apply flex justify-center items-center gap-6 mb-4 transition-all duration-500;
   }
 
   .control-button {
-    @apply bg-transparent border-none text-[var(--spotify-white)] cursor-pointer flex items-center justify-center p-2 transition-transform duration-100 hover:scale-110;
+    @apply bg-transparent border-none text-[var(--spotify-white)] cursor-pointer flex items-center justify-center p-1.5 transition-transform duration-100 hover:scale-110;
   }
 
   .control-button.play-pause {
-    @apply bg-[var(--spotify-white)] text-black rounded-full p-3 hover:scale-105;
+    @apply bg-[var(--spotify-white)] text-black rounded-full p-2.5 hover:scale-105;
   }
 
   .progress-container {
@@ -244,7 +91,126 @@
     @apply bg-transparent border-none text-[var(--spotify-grey)] cursor-pointer p-1 transition-all duration-200 hover:text-[var(--spotify-white)] flex items-center justify-center;
   }
 
-  /* Lyrics Styling */
+  /* --- Portrait Layout --- */
+  @media (orientation: portrait) {
+    .dashboard-layout {
+      @apply flex-col;
+    }
+
+    .player-section {
+      @apply w-full p-6 flex flex-col items-center transition-all duration-500 ease-in-out;
+    }
+
+    .artwork-container {
+      @apply w-48 h-48 mb-6 shadow-2xl transition-all duration-500;
+    }
+
+    .track-info {
+      @apply text-center mb-4 transition-all duration-500 overflow-hidden;
+    }
+
+    .player-controls-wrapper {
+      @apply w-full max-w-md transition-all duration-500;
+    }
+
+    .lyrics-section {
+      @apply flex-1 w-full px-6 pb-6 overflow-hidden;
+    }
+  }
+
+  /* --- Landscape Layout --- */
+  @media (orientation: landscape) {
+    .header {
+      @apply hidden;
+    }
+
+    .dashboard-layout {
+      @apply flex-row;
+    }
+
+    .player-section {
+      @apply w-[280px] h-full p-4 flex flex-col justify-center items-center border-r border-white/10 transition-all duration-500 ease-in-out overflow-hidden;
+    }
+
+    .artwork-container {
+      @apply w-full max-h-[40vh] mb-3 shadow-2xl flex-shrink-1 flex items-center justify-center;
+    }
+
+    .artwork {
+      @apply max-w-full max-h-full w-auto h-auto object-contain rounded-lg;
+    }
+
+    .track-info {
+      @apply w-full mb-2 text-center flex-shrink-0;
+    }
+
+    .track-name {
+      @apply text-lg font-bold;
+    }
+
+    .artist-name {
+      @apply text-sm mt-0;
+    }
+
+    .player-controls-wrapper {
+      @apply w-full flex-shrink-0;
+    }
+
+    .controls {
+      @apply mb-2 gap-4;
+    }
+
+    .progress-container {
+      @apply gap-1;
+    }
+
+    .lyrics-section {
+      @apply flex-1 px-12 py-8 overflow-hidden;
+    }
+  }
+
+  /* --- Shared Minimized Layout (Order matters: overrides media queries when active) --- */
+  .player-minimized .header {
+    @apply hidden;
+  }
+
+  .player-minimized .dashboard-layout {
+    @apply flex-col;
+  }
+
+  .player-minimized .player-section {
+    @apply w-full h-auto flex-row py-1 px-4 gap-4 justify-center bg-[var(--spotify-dark-grey)] border-b border-white/10 border-r-0 static transition-all duration-500;
+  }
+
+  .player-minimized .track-info {
+    @apply mb-0 flex-1 text-center flex flex-row justify-center items-center gap-0 whitespace-nowrap overflow-hidden;
+  }
+
+  .player-minimized .track-name {
+    @apply text-sm font-bold;
+  }
+
+  .player-minimized .artist-name {
+    @apply text-sm mt-0 text-[var(--spotify-grey)] flex items-center;
+  }
+
+  .player-minimized .player-controls-wrapper {
+    @apply hidden;
+  }
+
+  .player-minimized .lyrics-section {
+    @apply w-full flex-1 px-6 pb-6 pt-2 overflow-hidden;
+  }
+
+  .min-separator {
+    @apply hidden;
+  }
+
+  .player-minimized .min-separator {
+    @apply inline px-1 opacity-50;
+  }
+
+  /* --- Other Components --- */
   .lyrics-content {
     @apply h-full overflow-y-auto pr-4 scroll-smooth;
     mask-image: linear-gradient(to bottom, transparent, black 15%, black 85%, transparent);
@@ -270,7 +236,6 @@
     @apply text-white/80;
   }
 
-  /* Utility Views */
   .no-lyrics {
     @apply text-xl text-[var(--spotify-grey)] flex justify-center items-center h-full;
   }

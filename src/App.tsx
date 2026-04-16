@@ -101,12 +101,18 @@ function DashboardView() {
   const { item, is_playing } = playback;
   const { album, name, artists, duration_ms } = item;
 
+  const toggleCollapse = () => setIsPlayerMinimized(!isPlayerMinimized);
+
   return (
     <div className={`dashboard-container ${isPlayerMinimized ? 'player-minimized' : ''}`}>
-      <Header />
+      {!isPlayerMinimized && <Header />}
       
       <div className="dashboard-layout">
-        <div className="player-section">
+        <div 
+          className="player-section" 
+          onClick={toggleCollapse}
+          style={{ cursor: 'pointer' }}
+        >
           {!isPlayerMinimized && (
             <div className="artwork-container">
               <img src={album.images[0]?.url} alt={album.name} className="artwork" />
@@ -115,14 +121,19 @@ function DashboardView() {
           
           <div className="track-info">
             <h2 className="track-name">{name}</h2>
-            <p className="artist-name">{artists.map((a: any) => a.name).join(', ')}</p>
+            <p className="artist-name">
+              <span className="min-separator"> • </span>
+              {artists.map((a: any) => a.name).join(', ')}
+            </p>
           </div>
 
-          <div className="player-controls-wrapper">
+          <div className="player-controls-wrapper" onClick={(e) => e.stopPropagation()}>
             <PlayerControls 
               isPlaying={is_playing} 
               onTogglePlay={handleTogglePlay} 
-              onSkip={handleSkip} 
+              onSkip={handleSkip}
+              hideNavigation={isPlayerMinimized}
+              hidePlayPause={isPlayerMinimized}
             />
 
             <ProgressBar 
@@ -131,24 +142,6 @@ function DashboardView() {
               onSeek={handleSeek} 
             />
           </div>
-
-          {/* Orientation-aware toggle */}
-          <button 
-            className="minimize-toggle minimize-toggle-land" 
-            onClick={() => setIsPlayerMinimized(!isPlayerMinimized)}
-          >
-            {/* 
-              Portrait: Minimize moves UP (ChevronUp), Expand moves DOWN (ChevronDown)
-              Landscape: Minimize moves DOWN (ChevronDown), Expand moves UP (ChevronUp)
-            */}
-            <span className="portrait-only">
-              {isPlayerMinimized ? <ChevronDown size={24} /> : <ChevronUp size={24} />}
-            </span>
-            <span className="landscape-only">
-              {isPlayerMinimized ? <ChevronUp size={24} /> : <ChevronDown size={24} />}
-            </span>
-            <span>{isPlayerMinimized ? 'Expand' : 'Collapse'}</span>
-          </button>
         </div>
 
         <div className="lyrics-section">
