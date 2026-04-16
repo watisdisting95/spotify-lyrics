@@ -190,12 +190,24 @@
     .player-minimized .minimize-toggle-land {
        @apply mt-0;
     }
+
+    .portrait-only {
+      @apply hidden;
+    }
   }
 
   /* Portrait Layout Fixes */
   @media (orientation: portrait) {
     .minimize-toggle-land {
+      @apply flex; /* Ensure button is visible in portrait as it's our main toggle now */
+    }
+
+    .landscape-only {
       @apply hidden;
+    }
+
+    .portrait-only {
+      @apply block;
     }
   }
 

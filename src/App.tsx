@@ -132,20 +132,27 @@ function DashboardView() {
             />
           </div>
 
-          {/* Landscape-specific toggle (hidden in portrait via CSS) */}
+          {/* Orientation-aware toggle */}
           <button 
             className="minimize-toggle minimize-toggle-land" 
             onClick={() => setIsPlayerMinimized(!isPlayerMinimized)}
           >
-            {isPlayerMinimized ? <ChevronUp size={24} /> : <ChevronDown size={24} />}
-            <span>{isPlayerMinimized ? 'Expand' : 'Minimize'}</span>
+            {/* 
+              Portrait: Minimize moves UP (ChevronUp), Expand moves DOWN (ChevronDown)
+              Landscape: Minimize moves DOWN (ChevronDown), Expand moves UP (ChevronUp)
+            */}
+            <span className="portrait-only">
+              {isPlayerMinimized ? <ChevronDown size={24} /> : <ChevronUp size={24} />}
+            </span>
+            <span className="landscape-only">
+              {isPlayerMinimized ? <ChevronUp size={24} /> : <ChevronDown size={24} />}
+            </span>
+            <span>{isPlayerMinimized ? 'Expand' : 'Collapse'}</span>
           </button>
         </div>
 
         <div className="layout-divisor" onClick={() => setIsPlayerMinimized(!isPlayerMinimized)}>
-          <button className="minimize-toggle">
-            {isPlayerMinimized ? <ChevronDown size={24} /> : <ChevronUp size={24} />}
-          </button>
+          {/* Redundant button removed as per user request */}
         </div>
 
         <div className="lyrics-section">
