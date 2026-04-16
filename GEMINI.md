@@ -32,13 +32,24 @@ This document provides context for AI agents and developers working on this proj
 *   **Local Storage:** Tokens (`spotify_tokens`) and the PKCE `verifier` are stored in `localStorage`.
 *   **IndexedDB:** Lyrics and pre-processed data are stored in IndexedDB for persistence across sessions.
 
+## 🌍 Deployment & CI/CD
+*   **Hosting:** GitHub Pages (`https://watisdisting95.github.io/spotify-lyrics/`).
+*   **CI/CD:** Automatic deployment via GitHub Actions (`.github/workflows/deploy.yml`).
+*   **Routing:** Uses **`HashRouter`** to ensure SPA routing compatibility with GitHub Pages.
+*   **OAuth Redirect Handling:** 
+    *   Spotify does not support fragments (`#`) in Redirect URIs.
+    *   Production Redirect URI: `https://watisdisting95.github.io/spotify-lyrics/`.
+    *   The `LoginView` in `App.tsx` contains a `useEffect` to intercept the `?code=` query parameter from the main URL and redirect it to the hash-based callback route (`#/callback?code=...`).
+
 ## ⚠️ Known Limitations
 *   **Spotify Premium Required:** Playback control commands (Seek, Play/Pause, Skip) are restricted to Spotify Premium users by the official API.
 *   **Audio Output:** This app is a **controller only**. It does not output audio. An active Spotify session must be running on another device.
 
 ## 🔧 Environment Setup (`.env`)
 Required variables:
-*   `VITE_SPOTIFY_CLIENT_ID`: Your official Spotify Client ID.
-*   `VITE_REDIRECT_URI`: Must be `http://127.0.0.1:5173/callback`.
+*   `VITE_SPOTIFY_CLIENT_ID`: Your official Spotify Client ID. (In GitHub, this is stored as an **Actions Secret**).
+*   `VITE_REDIRECT_URI`: 
+    *   Local: `http://127.0.0.1:5173/callback`
+    *   Production: `https://watisdisting95.github.io/spotify-lyrics/`
 *   `VITE_POLL_INTERVAL_MS`: Recommended 5000.
 *   `VITE_ENABLE_INTERPOLATION`: Recommended true.
