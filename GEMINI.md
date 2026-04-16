@@ -11,8 +11,8 @@ This document provides context for AI agents and developers working on this proj
 *   **Authentication Flow (PKCE):** We use the **OAuth 2.0 Authorization Code Flow with PKCE**.
     *   **NO Client Secret:** Do not attempt to add or use a Client Secret. The PKCE flow is designed to be secure without it on public clients (browsers).
     *   **Token Refresh Lock:** A semaphore (lock) is implemented in `src/SpotifyAPI.ts` to prevent race conditions during concurrent token refresh attempts.
-*   **Visual Standard:** Maintain a high-quality, modern, Spotify-inspired dark theme using Tailwind-like CSS variables in `src/index.css`.
-*   **PWA Support:** The application is a Progressive Web App (PWA) with a manifest and service worker, making it installable on mobile devices for a full-screen, app-like experience.
+*   **Dynamic Visual Standard:** The application features a fully adaptive, high-contrast theme that automatically generates colors from the current album artwork.
+*   **PWA Support:** The application is a Progressive Web App (PWA) with a manifest and service worker, making it installable on mobile devices for a full-screen, app-like experience. (Note: Service worker registration is restricted to production mode to avoid development server conflicts).
 
 ## 🛠 Architectural Highlights
 
@@ -21,21 +21,21 @@ This document provides context for AI agents and developers working on this proj
 *   **Interactive States (Collapsed/Expanded):** 
     *   Clicking the player section toggles between states.
     *   **Collapsed Mode:** Unified single-line track info (Song • Artist) at the top of the screen. Hides all playback controls and the header to maximize lyrics visibility.
-    *   **Expanded Mode:** Full player controls, artwork, and progress bar are visible.
-*   **Layout Constraints:** In landscape mode, the player section is height-constrained with responsive artwork scaling (`object-contain`) to ensure all controls remain visible without scrolling on mobile screens.
+*   **Adaptive Theming (HSL Color Theory):** 
+    *   Dominant color extraction using `fast-average-color`.
+    *   Monochromatic contrast derivation: Converts RGB to HSL and generates light/dark tints or shades for text and UI elements based on the background's luminosity.
+    *   Ensures 100% legibility across all album artwork types.
+*   **Artwork Modal:** High-resolution expanded view of the album artwork accessible via tap, featuring integrated song information.
 
 ### 2. Playback Interpolation Engine
 *   **Mechanism:** To stay within Spotify's rate limits while providing a "smooth" UI, we use a local 100ms ticker (`DashboardView` in `App.tsx`).
 *   **Behavior:** The ticker optimistically increments the playback progress based on the last known `is_playing` state and `progress_ms` from the API.
-*   **Configuration:** 
-    *   `VITE_POLL_INTERVAL_MS`: Controls how often we sync with the real Spotify server (default 5000ms).
-    *   `VITE_ENABLE_INTERPOLATION`: Toggles the smooth local updates.
 
 ### 3. Synchronized Lyrics (LRCLIB)
 *   **Provider:** [LRCLIB](https://lrclib.net/) is used for public, open-access synced lyrics.
 *   **Matching:** Lyrics are matched using `track_name`, `artist_name`, `album_name`, and `duration`. Note that LRCLIB requires a duration match within **±2 seconds** for high-confidence results.
-*   **Caching:** Parsed `LyricLine` objects are cached in **IndexedDB** using `idb-keyval` to ensure instantaneous loading on subsequent track plays.
-*   **Auto-Scroll:** The `LyricsView` component uses a `useEffect` and `scrollIntoView({ behavior: 'smooth', block: 'center' })` to keep the active lyric line centered.
+*   **Compact Display:** Optimized line spacing and opacity-based focus (current line at 100% opacity, inactive lines at 30% opacity) for enhanced readability.
+*   **Loading Feedback:** Integrated loading spinner (`Loader2`) for visual feedback during lyric fetching.
 
 ### 4. State Management
 *   **Local Storage:** Tokens (`spotify_tokens`) and the PKCE `verifier` are stored in `localStorage`.
@@ -45,10 +45,6 @@ This document provides context for AI agents and developers working on this proj
 *   **Hosting:** GitHub Pages (`https://watisdisting95.github.io/spotify-lyrics/`).
 *   **CI/CD:** Automatic deployment via GitHub Actions (`.github/workflows/deploy.yml`).
 *   **Routing:** Uses **`HashRouter`** to ensure SPA routing compatibility with GitHub Pages.
-*   **OAuth Redirect Handling:** 
-    *   Spotify does not support fragments (`#`) in Redirect URIs.
-    *   Production Redirect URI: `https://watisdisting95.github.io/spotify-lyrics/`.
-    *   The `LoginView` in `App.tsx` contains a `useEffect` to intercept the `?code=` query parameter from the main URL and redirect it to the hash-based callback route (`#/callback?code=...`).
 
 ## ⚠️ Known Limitations
 *   **Spotify Premium Required:** Playback control commands (Seek, Play/Pause, Skip) are restricted to Spotify Premium users by the official API.

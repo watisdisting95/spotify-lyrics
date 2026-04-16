@@ -93,6 +93,7 @@ function DashboardView() {
   } = useSpotifyPlayback();
 
   const [isPlayerMinimized, setIsPlayerMinimized] = useState(false);
+  const [isArtworkExpanded, setIsArtworkExpanded] = useState(false);
 
   const albumImageUrl = playback?.item?.album?.images[0]?.url;
   const { dominant, light } = useAlbumColor(albumImageUrl);
@@ -106,7 +107,16 @@ function DashboardView() {
   const { item, is_playing } = playback;
   const { album, name, artists, duration_ms } = item;
 
-  const toggleCollapse = () => setIsPlayerMinimized(!isPlayerMinimized);
+  const toggleCollapse = (e: React.MouseEvent) => {
+    // Prevent collapsing if clicking on the artwork itself
+    if ((e.target as HTMLElement).closest('.artwork-container')) return;
+    setIsPlayerMinimized(!isPlayerMinimized);
+  };
+
+  const toggleArtwork = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setIsArtworkExpanded(!isArtworkExpanded);
+  };
 
   return (
     <div 
@@ -125,7 +135,7 @@ function DashboardView() {
           style={{ cursor: 'pointer' }}
         >
           {!isPlayerMinimized && (
-            <div className="artwork-container">
+            <div className="artwork-container" onClick={toggleArtwork}>
               <img src={album.images[0]?.url} alt={album.name} className="artwork" />
             </div>
           )}
@@ -164,6 +174,18 @@ function DashboardView() {
           />
         </div>
       </div>
+
+      {isArtworkExpanded && (
+        <div className="artwork-modal" onClick={() => setIsArtworkExpanded(false)}>
+          <div className="artwork-modal-content">
+            <img src={album.images[0]?.url} alt={album.name} />
+            <div className="artwork-modal-info">
+              <h2 className="modal-track-name">{name}</h2>
+              <p className="modal-artist-name">{artists.map((a: any) => a.name).join(', ')}</p>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

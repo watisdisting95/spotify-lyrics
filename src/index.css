@@ -88,7 +88,8 @@
   }
 
   .progress-bar {
-    @apply w-full cursor-pointer h-1 bg-white/20 rounded-full transition-all duration-700;
+    @apply w-full cursor-pointer h-1 rounded-full transition-all duration-700;
+    background-color: rgba(var(--accent-rgb), 0.2);
     accent-color: rgb(var(--accent-rgb));
   }
 
@@ -239,8 +240,9 @@
   }
 
   .lyric-line {
-    @apply text-3xl font-extrabold my-4 mx-0 leading-tight text-[var(--spotify-grey)] cursor-pointer transition-all duration-500 origin-left;
-    opacity: 0.4;
+    @apply text-3xl font-extrabold my-4 mx-0 leading-tight cursor-pointer transition-all duration-500 origin-left;
+    color: rgb(var(--accent-rgb));
+    opacity: 0.3;
   }
 
   .lyric-line.active {
@@ -273,5 +275,44 @@
 
   .error {
     @apply flex items-center justify-center h-screen text-xl text-red-500;
+  }
+
+  /* --- Artwork Modal --- */
+  .artwork-modal {
+    @apply fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-xl transition-opacity duration-300;
+    animation: fadeIn 0.3s ease-out;
+  }
+
+  .artwork-modal-content {
+    @apply max-w-[90vw] max-h-[90vh] shadow-2xl relative;
+    animation: zoomIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  .artwork-modal-content img {
+    @apply w-full h-full object-contain rounded-xl;
+  }
+
+  .artwork-modal-info {
+    @apply absolute bottom-0 left-0 right-0 p-8 pt-16 text-center rounded-b-xl;
+    background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 100%);
+    color: rgb(var(--accent-rgb));
+  }
+
+  .modal-track-name {
+    @apply text-2xl font-bold m-0;
+  }
+
+  .modal-artist-name {
+    @apply text-lg mt-1 mb-0 opacity-80;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  @keyframes zoomIn {
+    from { transform: scale(0.8); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
   }
 }
