@@ -12,6 +12,7 @@ export function useSpotifyPlayback() {
   const [displayProgress, setDisplayProgress] = useState<number>(0);
   const [lyrics, setLyrics] = useState<LyricLine[] | null>(null);
   const [loading, setLoading] = useState(true);
+  const [lyricsLoading, setLyricsLoading] = useState(false);
   const navigate = useNavigate();
   
   const pollTimerRef = useRef<number | null>(null);
@@ -31,13 +32,18 @@ export function useSpotifyPlayback() {
       if (data?.item?.id && data.item.id !== currentTrackIdRef.current) {
         currentTrackIdRef.current = data.item.id;
         setLyrics(null);
-        const fetchedLyrics = await fetchLyrics(
-          data.item.name,
-          data.item.artists[0].name,
-          data.item.album.name,
-          Math.floor(data.item.duration_ms / 1000)
-        );
-        setLyrics(fetchedLyrics);
+        setLyricsLoading(true);
+        try {
+          const fetchedLyrics = await fetchLyrics(
+            data.item.name,
+            data.item.artists[0].name,
+            data.item.album.name,
+            Math.floor(data.item.duration_ms / 1000)
+          );
+          setLyrics(fetchedLyrics);
+        } finally {
+          setLyricsLoading(false);
+        }
       }
     } catch (err) {
       console.error(err);
@@ -125,6 +131,7 @@ export function useSpotifyPlayback() {
     handleTogglePlay,
     handleSkip,
     fetchPlayback,
-    setDisplayProgress
+    setDisplayProgress,
+    lyricsLoading
   };
 }

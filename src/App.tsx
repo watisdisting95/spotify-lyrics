@@ -85,6 +85,7 @@ function DashboardView() {
     displayProgress,
     lyrics,
     loading,
+    lyricsLoading,
     currentLyricIndex,
     handleSeek,
     handleTogglePlay,
@@ -157,6 +158,7 @@ function DashboardView() {
         <div className="lyrics-section">
           <LyricsView 
             lyrics={lyrics} 
+            lyricsLoading={lyricsLoading}
             currentLyricIndex={currentLyricIndex} 
             onLyricClick={handleSeek}
           />

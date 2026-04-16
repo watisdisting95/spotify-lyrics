@@ -26,11 +26,24 @@ export function useAlbumColor(imageUrl: string | undefined) {
           crossOrigin: 'anonymous'
         });
 
+        // Logic for high-contrast accents
+        let accent: [number, number, number];
+        
+        if (color.isLight) {
+          // If background is light, use a darkened average or a dark fallback
+          accent = avgColor && !avgColor.isLight ? 
+                   [avgColor.value[0], avgColor.value[1], avgColor.value[2]] : 
+                   [Math.max(color.value[0] - 150, 20), Math.max(color.value[1] - 150, 20), Math.max(color.value[2] - 150, 20)];
+        } else {
+          // If background is dark, use a lightened average or a light fallback
+          accent = avgColor && avgColor.isLight ? 
+                   [avgColor.value[0], avgColor.value[1], avgColor.value[2]] : 
+                   [Math.min(color.value[0] + 150, 255), Math.min(color.value[1] + 150, 255), Math.min(color.value[2] + 150, 255)];
+        }
+
         setColors({
           dominant: [color.value[0], color.value[1], color.value[2]],
-          light: avgColor && avgColor.isLight ? 
-                 [avgColor.value[0], avgColor.value[1], avgColor.value[2]] : 
-                 [Math.min(color.value[0] + 150, 255), Math.min(color.value[1] + 150, 255), Math.min(color.value[2] + 150, 255)]
+          light: accent
         });
       }
     })
