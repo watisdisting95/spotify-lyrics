@@ -110,5 +110,5 @@ export const getSavedTokens = (): SpotifyTokens | null => {
 export const logout = () => {
   localStorage.removeItem('spotify_tokens');
   localStorage.removeItem('verifier');
-  window.location.href = '/';
+  window.location.href = '/spotify-lyrics/';
 };
