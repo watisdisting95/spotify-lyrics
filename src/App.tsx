@@ -25,6 +25,18 @@ function LoginView() {
   const navigate = useNavigate();
 
   useEffect(() => {
+    // Check for Spotify auth code in the main window URL (before the #)
+    const urlParams = new URLSearchParams(window.location.search);
+    const code = urlParams.get('code');
+    
+    if (code) {
+      console.log('LoginView: Found code in URL, redirecting to callback hash route');
+      // Clean up the URL and move the code to the hash route
+      window.history.replaceState({}, document.title, window.location.pathname);
+      navigate(`/callback?code=${code}`);
+      return;
+    }
+
     if (tokens) {
       navigate('/dashboard');
     }
