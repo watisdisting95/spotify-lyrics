@@ -2,7 +2,7 @@ const CLIENT_ID = import.meta.env.VITE_SPOTIFY_CLIENT_ID;
 
 // Use the built-in BASE_URL from Vite to ensure we always point to the correct callback location.
 // This works for both local development (/) and production (/spotify-lyrics/).
-const REDIRECT_URI = new URL('callback', window.location.origin + import.meta.env.BASE_URL).href;
+const REDIRECT_URI = new URL(import.meta.env.BASE_URL, window.location.origin).href;
 
 console.log('SpotifyAuth: CLIENT_ID present:', !!CLIENT_ID);
 console.log('SpotifyAuth: REDIRECT_URI:', REDIRECT_URI);
