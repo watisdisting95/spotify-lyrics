@@ -24,25 +24,23 @@ export const LyricsView: React.FC<LyricsViewProps> = ({
   }, [currentLyricIndex]);
 
   return (
-    <div className="lyrics-section">
-      <div className="lyrics-content">
-        {lyrics ? (
-          lyrics.map((line, index) => (
-            <p
-              key={index}
-              ref={index === currentLyricIndex ? activeLyricRef : null}
-              className={`lyric-line ${index === currentLyricIndex ? 'active' : ''} ${
-                index > currentLyricIndex ? 'future' : ''
-              }`}
-              onClick={() => onLyricClick(line.time)}
-            >
-              {line.text}
-            </p>
-          ))
-        ) : (
-          <p className="no-lyrics">Lyrics not available for this song.</p>
-        )}
-      </div>
+    <div className="lyrics-content">
+      {lyrics ? (
+        lyrics.map((line, index) => (
+          <p
+            key={index}
+            ref={index === currentLyricIndex ? activeLyricRef : null}
+            className={`lyric-line ${index === currentLyricIndex ? 'active' : ''} ${
+              index > currentLyricIndex ? 'future' : ''
+            }`}
+            onClick={() => onLyricClick(line.time)}
+          >
+            {line.text}
+          </p>
+        ))
+      ) : (
+        <p className="no-lyrics">Lyrics not available for this song.</p>
+      )}
     </div>
   );
 };

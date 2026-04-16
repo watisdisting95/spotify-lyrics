@@ -90,7 +90,7 @@ function DashboardView() {
     handleSkip,
   } = useSpotifyPlayback();
 
-  const [showLyrics, setShowLyrics] = useState(false);
+  const [isPlayerMinimized, setIsPlayerMinimized] = useState(false);
 
   if (loading) return <div className="loading">Connecting to Spotify...</div>;
 
@@ -102,21 +102,23 @@ function DashboardView() {
   const { album, name, artists, duration_ms } = item;
 
   return (
-    <div className={`dashboard-container ${showLyrics ? 'show-lyrics' : ''}`}>
+    <div className={`dashboard-container ${isPlayerMinimized ? 'player-minimized' : ''}`}>
       <Header />
-
-      <div className="dashboard-content">
+      
+      <div className="dashboard-layout">
         <div className="player-section">
-          <div className="player-card">
+          {!isPlayerMinimized && (
             <div className="artwork-container">
               <img src={album.images[0]?.url} alt={album.name} className="artwork" />
             </div>
-            
-            <div className="track-info">
-              <h2 className="track-name">{name}</h2>
-              <p className="artist-name">{artists.map((a: any) => a.name).join(', ')}</p>
-            </div>
+          )}
+          
+          <div className="track-info">
+            <h2 className="track-name">{name}</h2>
+            <p className="artist-name">{artists.map((a: any) => a.name).join(', ')}</p>
+          </div>
 
+          <div className="player-controls-wrapper">
             <PlayerControls 
               isPlaying={is_playing} 
               onTogglePlay={handleTogglePlay} 
@@ -129,22 +131,30 @@ function DashboardView() {
               onSeek={handleSeek} 
             />
           </div>
-          <p className="premium-note">Playback control requires Spotify Premium.</p>
-          
+
+          {/* Landscape-specific toggle (hidden in portrait via CSS) */}
           <button 
-            className="lyrics-toggle" 
-            onClick={() => setShowLyrics(!showLyrics)}
+            className="minimize-toggle minimize-toggle-land" 
+            onClick={() => setIsPlayerMinimized(!isPlayerMinimized)}
           >
-            {showLyrics ? <ChevronDown size={24} /> : <ChevronUp size={24} />}
-            {showLyrics ? 'Hide Lyrics' : 'Show Lyrics'}
+            {isPlayerMinimized ? <ChevronUp size={24} /> : <ChevronDown size={24} />}
+            <span>{isPlayerMinimized ? 'Expand' : 'Minimize'}</span>
           </button>
         </div>
 
-        <LyricsView 
-          lyrics={lyrics} 
-          currentLyricIndex={currentLyricIndex} 
-          onLyricClick={handleSeek}
-        />
+        <div className="layout-divisor" onClick={() => setIsPlayerMinimized(!isPlayerMinimized)}>
+          <button className="minimize-toggle">
+            {isPlayerMinimized ? <ChevronDown size={24} /> : <ChevronUp size={24} />}
+          </button>
+        </div>
+
+        <div className="lyrics-section">
+          <LyricsView 
+            lyrics={lyrics} 
+            currentLyricIndex={currentLyricIndex} 
+            onLyricClick={handleSeek}
+          />
+        </div>
       </div>
     </div>
   );
