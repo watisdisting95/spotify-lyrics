@@ -48,14 +48,16 @@ function CallbackView() {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+    console.log('CallbackView: Code present:', !!code);
     if (code) {
       getAccessToken(code)
         .then((tokens) => {
+          console.log('CallbackView: Token exchange success');
           saveTokens(tokens);
           navigate('/dashboard');
         })
         .catch((err) => {
-          console.error(err);
+          console.error('CallbackView: Token exchange error:', err);
           setError('Failed to login. Please try again.');
         });
     }

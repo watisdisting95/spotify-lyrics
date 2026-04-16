@@ -49,6 +49,7 @@ export const redirectToAuthCodeFlow = async () => {
 
 export const getAccessToken = async (code: string): Promise<SpotifyTokens> => {
   const verifier = localStorage.getItem('verifier');
+  console.log('getAccessToken: Using verifier:', !!verifier);
 
   const params = new URLSearchParams();
   params.append('client_id', CLIENT_ID);
@@ -57,6 +58,8 @@ export const getAccessToken = async (code: string): Promise<SpotifyTokens> => {
   params.append('redirect_uri', REDIRECT_URI);
   params.append('code_verifier', verifier!);
 
+  console.log('getAccessToken: Requesting token with redirect_uri:', REDIRECT_URI);
+
   const result = await fetch('https://accounts.spotify.com/api/token', {
     method: 'POST',
     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
@@ -64,9 +67,9 @@ export const getAccessToken = async (code: string): Promise<SpotifyTokens> => {
   });
 
   if (!result.ok) {
-    const error = await result.json();
-    console.error('Failed to get access token', error);
-    throw new Error(error.error_description || 'Failed to exchange code for token');
+    const errorBody = await result.json().catch(() => ({}));
+    console.error('getAccessToken: Result not OK:', result.status, errorBody);
+    throw new Error(errorBody.error_description || 'Failed to exchange code for token');
   }
 
   const tokens = await result.json();
