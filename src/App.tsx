@@ -151,10 +151,6 @@ function DashboardView() {
           </button>
         </div>
 
-        <div className="layout-divisor" onClick={() => setIsPlayerMinimized(!isPlayerMinimized)}>
-          {/* Redundant button removed as per user request */}
-        </div>
-
         <div className="lyrics-section">
           <LyricsView 
             lyrics={lyrics} 
