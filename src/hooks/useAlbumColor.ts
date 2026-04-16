@@ -15,25 +15,22 @@ export function useAlbumColor(imageUrl: string | undefined) {
 
     const fac = new FastAverageColor();
     
-    fac.getColorAsync(imageUrl, {
+    fac.getColorAsync(imageUrl as string, {
       crossOrigin: 'anonymous',
       algorithm: 'dominant'
     })
-    .then(color => {
+    .then(async (color) => {
       if (color && color.value) {
-        // We use the dominant color as the base.
-        // For the light accent, we can either use the average or a brightened version of the dominant.
-        // Let's also try to get the average for the text/accent.
-        return fac.getColorAsync(imageUrl, {
-          crossOrigin: 'anonymous',
-          algorithm: 'average'
-        }).then(avgColor => {
-          setColors({
-            dominant: [color.value[0], color.value[1], color.value[2]],
-            light: avgColor && avgColor.isLight ? 
-                   [avgColor.value[0], avgColor.value[1], avgColor.value[2]] : 
-                   [Math.min(color.value[0] + 150, 255), Math.min(color.value[1] + 150, 255), Math.min(color.value[2] + 150, 255)]
-          });
+        // For the light accent, we use the default algorithm (average)
+        const avgColor = await fac.getColorAsync(imageUrl as string, {
+          crossOrigin: 'anonymous'
+        });
+
+        setColors({
+          dominant: [color.value[0], color.value[1], color.value[2]],
+          light: avgColor && avgColor.isLight ? 
+                 [avgColor.value[0], avgColor.value[1], avgColor.value[2]] : 
+                 [Math.min(color.value[0] + 150, 255), Math.min(color.value[1] + 150, 255), Math.min(color.value[2] + 150, 255)]
         });
       }
     })
