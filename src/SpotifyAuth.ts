@@ -1,6 +1,9 @@
 const CLIENT_ID = import.meta.env.VITE_SPOTIFY_CLIENT_ID;
 const REDIRECT_URI = import.meta.env.VITE_REDIRECT_URI;
 
+console.log('SpotifyAuth: CLIENT_ID present:', !!CLIENT_ID);
+console.log('SpotifyAuth: REDIRECT_URI:', REDIRECT_URI);
+
 export interface SpotifyTokens {
   access_token: string;
   refresh_token: string;
