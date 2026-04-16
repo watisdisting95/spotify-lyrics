@@ -4,8 +4,8 @@ import { HashRouter } from 'react-router-dom';
 import './index.css';
 import App from './App.tsx';
 
-// Register Service Worker for PWA support
-if ('serviceWorker' in navigator) {
+// Register Service Worker for PWA support (Production only)
+if ('serviceWorker' in navigator && import.meta.env.PROD) {
   window.addEventListener('load', () => {
     navigator.serviceWorker.register(`${import.meta.env.BASE_URL}sw.js`)
       .then((registration) => {

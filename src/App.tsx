@@ -94,7 +94,7 @@ function DashboardView() {
   const [isPlayerMinimized, setIsPlayerMinimized] = useState(false);
 
   const albumImageUrl = playback?.item?.album?.images[0]?.url;
-  const [r, g, b] = useAlbumColor(albumImageUrl);
+  const { dominant, light } = useAlbumColor(albumImageUrl);
 
   if (loading) return <div className="loading">Connecting to Spotify...</div>;
 
@@ -110,7 +110,10 @@ function DashboardView() {
   return (
     <div 
       className={`dashboard-container ${isPlayerMinimized ? 'player-minimized' : ''}`}
-      style={{ '--album-rgb': `${r}, ${g}, ${b}` } as React.CSSProperties}
+      style={{ 
+        '--album-rgb': `${dominant[0]}, ${dominant[1]}, ${dominant[2]}`,
+        '--accent-rgb': `${light[0]}, ${light[1]}, ${light[2]}`
+      } as React.CSSProperties}
     >
       {!isPlayerMinimized && <Header />}
       
