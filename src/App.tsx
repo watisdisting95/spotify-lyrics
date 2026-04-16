@@ -8,7 +8,6 @@ import { PlayerControls } from './components/PlayerControls';
 import { ProgressBar } from './components/ProgressBar';
 import { LyricsView } from './components/LyricsView';
 import { NoPlaybackView } from './components/NoPlaybackView';
-import './App.css';
 
 function App() {
   return (
@@ -31,8 +30,8 @@ function LoginView() {
     
     if (code) {
       console.log('LoginView: Found code in URL, redirecting to callback hash route');
-      // Clean up the URL and move the code to the hash route
-      window.history.replaceState({}, document.title, window.location.pathname);
+      // Clean up the URL and move the code to the hash route, but reset the path to root
+      window.history.replaceState({}, document.title, import.meta.env.BASE_URL);
       navigate(`/callback?code=${code}`);
       return;
     }

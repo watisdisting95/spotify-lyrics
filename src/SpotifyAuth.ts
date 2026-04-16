@@ -1,8 +1,13 @@
 const CLIENT_ID = import.meta.env.VITE_SPOTIFY_CLIENT_ID;
-const REDIRECT_URI = import.meta.env.VITE_REDIRECT_URI;
+
+// Use the built-in BASE_URL from Vite to ensure we always point to the correct callback location.
+// This works for both local development (/) and production (/spotify-lyrics/).
+const REDIRECT_URI = new URL('callback', window.location.origin + import.meta.env.BASE_URL).href;
 
 console.log('SpotifyAuth: CLIENT_ID present:', !!CLIENT_ID);
 console.log('SpotifyAuth: REDIRECT_URI:', REDIRECT_URI);
+
+
 
 export interface SpotifyTokens {
   access_token: string;
@@ -116,5 +121,7 @@ export const getSavedTokens = (): SpotifyTokens | null => {
 export const logout = () => {
   localStorage.removeItem('spotify_tokens');
   localStorage.removeItem('verifier');
-  window.location.href = '/spotify-lyrics/';
+  // Use relative path to base for logout redirection
+  const base = import.meta.env.BASE_URL;
+  window.location.href = base;
 };
